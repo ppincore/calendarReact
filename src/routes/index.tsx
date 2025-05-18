@@ -13,8 +13,14 @@ export enum RouteNames {
   NOT_FOUND = "*",
 }
 
+export const staticRoute: IRoute = {
+  path: RouteNames.NOT_FOUND,
+  component: <NotFound />,
+};
+
 export const publicRoutes: IRoute[] = [
   { path: RouteNames.LOGIN, component: <Login /> },
-  { path: RouteNames.NOT_FOUND, component: <NotFound /> },
 ];
-export const privateRoutes: IRoute[] = [{ path: RouteNames.EVENT, component: <Event /> }];
+export const privateRoutes: IRoute[] = [
+  { path: RouteNames.EVENT, component: <Event /> },
+];
