@@ -1,19 +1,24 @@
 import { Header } from "antd/es/layout/layout";
 import { Menu, Row } from "antd";
 import { useNavigate } from "react-router-dom";
-
 import type { MenuProps } from "antd";
+import { useSelector,useDispatch } from "../../store/store.ts";
+import { selectIsAuth,fetchUser,fetchLogout } from "../../slices/sliceStorage/userSlice";
+
 const NavBar = () => {
   const router = useNavigate();
-  const auth = true;
-  console.log(router);
+  const isAuth = useSelector(selectIsAuth);
+  const dispatch = useDispatch();
+  console.log(isAuth);
 
   const menuItemsUnAuth: MenuProps["items"] = [
     {
       key: "2",
-      label: "Выйти",
+      label: "Войти",
       onClick: () => {
-        console.log("logIn");
+        dispatch(fetchUser());
+        console.log(router('/'));
+        router('/');
       },
     },
   ];
@@ -23,7 +28,8 @@ const NavBar = () => {
       key: "1",
       label: "Выйти",
       onClick: () => {
-        console.log("logOut");
+        dispatch(fetchLogout());
+        router('/login');
       },
     },
   ];
@@ -31,7 +37,7 @@ const NavBar = () => {
   return (
     <Header>
       <Row justify={"end"}>
-        {auth ? (
+        {isAuth ? (
           <>
             <div style={{ color: "white" }}>Admin</div>
             <Menu
