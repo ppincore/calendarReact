@@ -85,5 +85,6 @@ export const fetchLogout = createAsyncThunk("user/logout", async () => {
 });
 
 export const { initUser, authUser } = userSlice.actions;
+export const { selectIsAuth, selectUserInfo, selectIsInit, selectUserLoading } = userSlice.selectors;
 export const userSliceInitialState = initialState;
 export default userSlice.reducer;
