@@ -4,10 +4,11 @@ import { Navigate, useLocation } from 'react-router-dom';
 type ProtectedRouteProps = {
   children: ReactNode;
   authOnly?: boolean;
+  isAuth: boolean;
 };
 
-export const ProtectedRoute = ({ children, authOnly }: ProtectedRouteProps) => {
-  const isAuth = true
+export const ProtectedRoute = ({ children, authOnly, isAuth }: ProtectedRouteProps) => {
+
   const location = useLocation();
 
 
