@@ -4,6 +4,6 @@ export type TUser = {
 };
 
 export type TLoginData = {
-  email: string;
+  username: string;
   password: string;
 };
