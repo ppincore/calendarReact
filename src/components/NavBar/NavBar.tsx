@@ -16,9 +16,8 @@ const NavBar = () => {
       key: "2",
       label: "Войти",
       onClick: () => {
-        dispatch(fetchUser());
         console.log(router('/'));
-        router('/');
+        router('/login');
       },
     },
   ];
