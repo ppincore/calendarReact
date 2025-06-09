@@ -41,7 +41,7 @@ const NavBar = () => {
       <Row justify={"end"}>
         {isAuth ? (
           <>
-            <div style={{ color: "white" }}>{userInfo.name}</div>
+            <div style={{ color: "white" }}>{userInfo.username}</div>
             <Menu
               theme="dark"
               mode="horizontal"

@@ -20,7 +20,7 @@ const initialState: TUserInitialState = {
   isAuth: false,
   userInfo: {
     email: "",
-    name: "",
+    username: "",
   },
   error: "",
 };
@@ -29,12 +29,8 @@ const userSlice = createSlice({
   name: "userSlice",
   initialState,
   reducers: {
-    initUser(state) {
-      state.isInit = true;
-    },
-    authUser(state, action: PayloadAction<TUser>) {
-      state.isAuth = true;
-      state.userInfo = action.payload;
+    clearError(state) {
+      state.error = "";
     },
   },
   selectors: {
@@ -69,13 +65,13 @@ const userSlice = createSlice({
         state.isLoading = false;
         if (action.payload) {
           state.userInfo = {
-            name: action.payload.username,
+            username: action.payload.username,
             email: action.payload.email,
           };
           state.isAuth = true;
         } else {
           state.userInfo = {
-            name: "",
+            username: "",
             email: "",
           };
           state.error = "Неверный логин или пароль";
@@ -109,7 +105,7 @@ export const fetchLogout = createAsyncThunk("user/logout", async () => {
   return { success: true };
 });
 
-export const { initUser, authUser } = userSlice.actions;
+export const { clearError } = userSlice.actions;
 export const {
   selectIsAuth,
   selectUserInfo,
@@ -117,5 +113,4 @@ export const {
   selectUserLoading,
   selectUserError,
 } = userSlice.selectors;
-export const userSliceInitialState = initialState;
 export default userSlice.reducer;
