@@ -1,4 +1,4 @@
-import type { TLoginData } from "../types";
+import type { TLoginData, TUser } from "../types";
 import users from "../mockdata/users.json";
 
 export const loginUserApi = (data: TLoginData) => {
@@ -10,3 +10,13 @@ export const loginUserApi = (data: TLoginData) => {
   if (!res) throw new Error("User not found");
   return res;
 };
+
+
+export const getUsers = ():TUser[] => {
+  const mockUsers = users.map((user)=>({
+    username: user.username,
+    email: user.email
+  }))
+  if(!mockUsers) throw new Error("Users not found");
+  return  mockUsers
+}
