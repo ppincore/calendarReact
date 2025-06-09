@@ -4,7 +4,7 @@ import {
   createAsyncThunk,
 } from "@reduxjs/toolkit";
 import { type TUser, type TLoginData } from "../../types";
-import { loginUserApi } from "../../components/utils/fakeAPI";
+import { loginUserApi } from "../../utils/fakeAPI";
 
 export type TUserInitialState = {
   isLoading: boolean;
@@ -42,6 +42,7 @@ const userSlice = createSlice({
     selectIsAuth: (state) => state.isAuth,
     selectIsInit: (state) => state.isInit,
     selectUserLoading: (state) => state.isLoading,
+    selectUserError: (state) => state.error,
   },
   extraReducers: (builder) => {
     builder
@@ -66,7 +67,6 @@ const userSlice = createSlice({
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.isLoading = false;
-        console.log(action);
         if (action.payload) {
           state.userInfo = {
             name: action.payload.username,
@@ -78,8 +78,8 @@ const userSlice = createSlice({
             name: "",
             email: "",
           };
-          state.error = "err";
-          state.isAuth = true;
+          state.error = "Неверный логин или пароль";
+          state.isAuth = false;
         }
       });
   },
@@ -87,21 +87,35 @@ const userSlice = createSlice({
 
 export const fetchUser = createAsyncThunk(
   "user/login",
-  async (data: TLoginData) => {
-    const res = loginUserApi(data);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(res);
-    return res;
+  async (data: TLoginData, { rejectWithValue }) => {
+    try {
+      const res = loginUserApi(data);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      localStorage.setItem("userName", res.username);
+      localStorage.setItem("password", res.password);
+      localStorage.setItem("auth", "true");
+      return res;
+    } catch {
+      rejectWithValue("Некорректные данные для входа.");
+    }
   }
 );
 
 export const fetchLogout = createAsyncThunk("user/logout", async () => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
+  localStorage.removeItem("userName");
+  localStorage.removeItem("password");
+  localStorage.removeItem("auth");
   return { success: true };
 });
 
 export const { initUser, authUser } = userSlice.actions;
-export const { selectIsAuth, selectUserInfo, selectIsInit, selectUserLoading } =
-  userSlice.selectors;
+export const {
+  selectIsAuth,
+  selectUserInfo,
+  selectIsInit,
+  selectUserLoading,
+  selectUserError,
+} = userSlice.selectors;
 export const userSliceInitialState = initialState;
 export default userSlice.reducer;

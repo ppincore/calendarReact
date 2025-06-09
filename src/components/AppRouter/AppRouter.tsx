@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import { publicRoutes, privateRoutes, staticRoute } from "../../routes";
 import { useSelector } from "../../store/store.ts";

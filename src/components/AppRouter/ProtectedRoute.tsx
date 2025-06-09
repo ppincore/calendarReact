@@ -1,5 +1,5 @@
-import { type ReactNode } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
+import { type ReactNode } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 
 type ProtectedRouteProps = {
   children: ReactNode;
@@ -7,19 +7,18 @@ type ProtectedRouteProps = {
   isAuth: boolean;
 };
 
-export const ProtectedRoute = ({ children, authOnly, isAuth }: ProtectedRouteProps) => {
-
+export const ProtectedRoute = ({
+  children,
+  authOnly,
+  isAuth,
+}: ProtectedRouteProps) => {
   const location = useLocation();
-
-
   if (authOnly && !isAuth) {
-    return <Navigate replace to='/login' state={{ from: location }} />;
+    return <Navigate replace to="/login" state={{ from: location }} />;
   }
-
   if (!authOnly && isAuth) {
-    return <Navigate replace to={'/'} />;
+    return <Navigate replace to={"/"} />;
   }
-
   return children;
 };
 
