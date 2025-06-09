@@ -5,11 +5,12 @@ import {
   useSelector as selectorHook,
 } from "react-redux";
 
-// import slices from "../slices/slices.ts";
+import eventSlice from "../slices/sliceStorage/eventSlice"
 import userSlice from "../slices/sliceStorage/userSlice";
 
 const rootReducer = combineReducers({
-  userSlice: userSlice
+  userSlice: userSlice,
+  eventSlice: eventSlice
 });
 
 const store = configureStore({
