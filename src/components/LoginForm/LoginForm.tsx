@@ -1,29 +1,47 @@
 import { Form, Input, Button } from "antd";
-import { rules } from "../utils/rules";
+import { rules } from "../../utils/rules";
+import { useSelector, useDispatch } from "../../store/store.ts";
+import {
+  selectUserLoading,
+  selectUserError,
+  fetchUser,
+} from "../../slices/sliceStorage/userSlice.ts";
+import { useState } from "react";
+
 const LoginForm = () => {
+  const [userName, setUserName] = useState<string>("");
+  const [userPassword, setUserPassword] = useState<string>("");
+  const isLoading = useSelector(selectUserLoading);
+  const errorMessage = useSelector(selectUserError);
+  const dispatch = useDispatch();
+
   const submit = () => {
-    console.log('sub')
-  }
+    dispatch(fetchUser({ username: userName, password: userPassword }));
+  };
+
   return (
-    <Form
-      onFinish={submit}
-    >
+    <Form onFinish={submit}>
+      {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       <Form.Item
         label="Username"
         name="username"
         rules={[rules.required("Please input your username")]}
       >
-        <Input />
+        <Input value={userName} onChange={(e) => setUserName(e.target.value)} />
       </Form.Item>
       <Form.Item
         label="Password"
         name="Password"
         rules={[rules.required("Password is incorrect")]}
       >
-        <Input />
+        <Input
+          value={userPassword}
+          onChange={(e) => setUserPassword(e.target.value)}
+          type="password"
+        />
       </Form.Item>
       <Form.Item>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={isLoading}>
           Login
         </Button>
       </Form.Item>

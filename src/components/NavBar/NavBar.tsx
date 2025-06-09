@@ -2,22 +2,25 @@ import { Header } from "antd/es/layout/layout";
 import { Menu, Row } from "antd";
 import { useNavigate } from "react-router-dom";
 import type { MenuProps } from "antd";
-import { useSelector,useDispatch } from "../../store/store.ts";
-import { selectIsAuth,fetchUser,fetchLogout } from "../../slices/sliceStorage/userSlice";
+import { useSelector, useDispatch } from "../../store/store.ts";
+import {
+  selectIsAuth,
+  fetchLogout,
+  selectUserInfo,
+} from "../../slices/sliceStorage/userSlice";
 
 const NavBar = () => {
   const router = useNavigate();
   const isAuth = useSelector(selectIsAuth);
+  const userInfo = useSelector(selectUserInfo);
   const dispatch = useDispatch();
-  console.log(isAuth);
 
   const menuItemsUnAuth: MenuProps["items"] = [
     {
       key: "2",
       label: "Войти",
       onClick: () => {
-        console.log(router('/'));
-        router('/login');
+        router("/login");
       },
     },
   ];
@@ -28,7 +31,7 @@ const NavBar = () => {
       label: "Выйти",
       onClick: () => {
         dispatch(fetchLogout());
-        router('/login');
+        router("/login");
       },
     },
   ];
@@ -38,7 +41,7 @@ const NavBar = () => {
       <Row justify={"end"}>
         {isAuth ? (
           <>
-            <div style={{ color: "white" }}>Admin</div>
+            <div style={{ color: "white" }}>{userInfo.name}</div>
             <Menu
               theme="dark"
               mode="horizontal"
