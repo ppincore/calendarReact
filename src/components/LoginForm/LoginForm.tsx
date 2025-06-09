@@ -5,7 +5,7 @@ import {
   selectUserLoading,
   selectUserError,
   fetchUser,
-  clearError
+  clearError,
 } from "../../slices/sliceStorage/userSlice.ts";
 import { useEffect, useState } from "react";
 
@@ -16,9 +16,9 @@ const LoginForm = () => {
   const errorMessage = useSelector(selectUserError);
   const dispatch = useDispatch();
 
-  useEffect(()=>{
-    dispatch(clearError())
-  }, [userName, userPassword, dispatch])
+  useEffect(() => {
+    dispatch(clearError());
+  }, [userName, userPassword, dispatch]);
 
   const submit = () => {
     dispatch(fetchUser({ username: userName, password: userPassword }));
@@ -26,7 +26,6 @@ const LoginForm = () => {
 
   return (
     <Form onFinish={submit}>
-      {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       <Form.Item
         label="Username"
         name="username"
@@ -45,6 +44,7 @@ const LoginForm = () => {
           type="password"
         />
       </Form.Item>
+      {errorMessage && <div style={{ color: "red" }}>{errorMessage}</div>}
       <Form.Item>
         <Button type="primary" htmlType="submit" loading={isLoading}>
           Login
