@@ -1,9 +1,17 @@
 export type TUser = {
-  email: string;
-  name: string;
+  username: string;
+  password?: string;
+  email?: string;
 };
 
 export type TLoginData = {
   username: string;
   password: string;
+};
+
+export type TEvent = {
+  author: string;
+  guest: string;
+  date: string;
+  descrition: string;
 };
