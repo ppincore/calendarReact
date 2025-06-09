@@ -5,8 +5,9 @@ import {
   selectUserLoading,
   selectUserError,
   fetchUser,
+  clearError
 } from "../../slices/sliceStorage/userSlice.ts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const LoginForm = () => {
   const [userName, setUserName] = useState<string>("");
@@ -14,6 +15,10 @@ const LoginForm = () => {
   const isLoading = useSelector(selectUserLoading);
   const errorMessage = useSelector(selectUserError);
   const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(clearError())
+  }, [userName, userPassword, dispatch])
 
   const submit = () => {
     dispatch(fetchUser({ username: userName, password: userPassword }));
