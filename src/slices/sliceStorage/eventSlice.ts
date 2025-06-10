@@ -48,7 +48,30 @@ const eventSlice = createSlice({
       .addCase(fetchGuests.fulfilled, (state, action) => {
         state.isLoading = false;
         state.guests = action.payload;
-        console.log(state.guests)
+      })
+      .addCase(createEvent.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createEvent.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message!;
+      })
+      .addCase(createEvent.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.events = action.payload!;
+        console.log(action, state);
+      })
+      .addCase(fetchEvents.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchEvents.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message!;
+      })
+      .addCase(fetchEvents.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.events = action.payload!;
+        console.log(action, state);
       });
   },
 });
@@ -57,12 +80,44 @@ export const fetchGuests = createAsyncThunk("guests/get", async () => {
   try {
     const res = getUsers();
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    console.log(res)
     return res;
   } catch {
     return [];
   }
 });
+
+export const createEvent = createAsyncThunk(
+  "event/create",
+  async (event: TEvent) => {
+    try {
+      const events = localStorage.getItem("events") || "[]";
+      const json = JSON.parse(events) as TEvent[];
+      json.push(event);
+      localStorage.setItem("events", JSON.stringify(json));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return json;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+);
+
+export const fetchEvents = createAsyncThunk(
+  "event/get",
+  async (username:string) => {
+    try {
+      const events = localStorage.getItem("events") || "[]";
+      const json = JSON.parse(events) as TEvent[];
+      const currentUserEvents = json.filter(
+        (ev) => ev.author !== username || ev.guest !== username
+      );
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return currentUserEvents;
+    } catch (e) {
+      console.log(e);
+    }
+  }
+);
 
 export const { setGuests, setEvents } = eventSlice.actions;
 export const { selectGuests, selectEvents } = eventSlice.selectors;
