@@ -13,5 +13,5 @@ export type TEvent = {
   author: string;
   guest: string;
   date: string;
-  descrition: string;
+  description: string;
 };
